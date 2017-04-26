@@ -1,7 +1,12 @@
 <?php
-  use xPaw\SourceQuery\SourceQuery;
-  require_once $_SERVER['DOCUMENT_ROOT'] . '/scripts/SourceQuery/bootstrap.php';
+
+  //Configuration Options
+  $config = include('./config.php');
   
+  use xPaw\SourceQuery\SourceQuery;
+  require_once $config['sourcequerypath'];
+  
+  //Functions
   function generateTrackingId($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -11,11 +16,6 @@
     }
     return $randomString;
   }
-?>
-
-<?php
-  //Configuration Options
-  $config = include('./config.php');
   
   // Perform authorization checks
   $requestoriginip = $_SERVER['REMOTE_ADDR'];

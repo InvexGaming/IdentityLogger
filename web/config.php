@@ -12,6 +12,7 @@
     'db_password' => 'dbpass',
     'db_dbname' => 'identitylogger',
     'db_charset' => 'utf8mb4',
-    'rconpassword' => 'rconpassword'
+    'rconpassword' => 'rconpassword',
+    'sourcequerypath' => './SourceQuery/bootstrap.php'
   );
 ?>
