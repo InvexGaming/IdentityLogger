@@ -36,23 +36,9 @@
   
   //At this point request is authorized and we can continue
   
-  //Connect to database at this stage
-  $conn = mysqli_connect($config['db_servername'], $config['db_username'], $config['db_password'], $config['db_dbname']);
-  
-  if (!$conn)
-    exit ("Failed to connect to IdentityLogger database.");
-  
-  //Set database charset
-  mysqli_set_charset($conn, $config['db_charset']);
-  
   //Check these parameters are provided at a minimum
   if (empty($_POST['steamid64']) || empty($_POST['ipaddress']) || empty($_POST['serverip']) || empty($_POST['serverport']))
     exit ("Some required parameters were not provided.");
-  
-  //Alias can either be empty or contain characters
-  $alias = "";
-  if (!empty($_POST['alias']))
-    $alias = mysqli_real_escape_string($conn, $_POST['alias']);
   
   $steamid64 = $_POST['steamid64'];
   $ipaddress = $_POST['ipaddress'];
@@ -70,6 +56,20 @@
   //Check server IP address for valid IPV4 format
   if (inet_pton($serverip) === false)
     exit ("Server IP address is not in valid format.");
+  
+  //Connect to database at this stage
+  $conn = mysqli_connect($config['db_servername'], $config['db_username'], $config['db_password'], $config['db_dbname']);
+  
+  if (!$conn)
+    exit ("Failed to connect to IdentityLogger database.");
+  
+  //Set database charset
+  mysqli_set_charset($conn, $config['db_charset']);
+  
+  //Alias can either be empty or contain characters
+  $alias = "";
+  if (!empty($_POST['alias']))
+    $alias = mysqli_real_escape_string($conn, $_POST['alias']);
   
   //All parameters are valid at this point
   
@@ -171,6 +171,7 @@
     }
     catch(Exception $e) {
       $sourcequery->Disconnect();
+      mysqli_close($conn);
       exit ("Failed to send server RCON to set tracking id: " . $e->getMessage());
     }
     finally {
